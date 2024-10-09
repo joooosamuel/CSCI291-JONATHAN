@@ -25,14 +25,14 @@
 #define e_w_mini 30
 #define e_m_mini 0
 #define e_choc_mini 0
-#define e_p_mini 3.5
+
 
 /*Minimum for Cappucino*/
 #define c_c_mini 8
 #define c_w_mini 30
 #define c_m_mini 70
 #define c_cho_mini 0
-#define c_p_mini 4.5
+
 
 
 /*MOCHA INGREDIENTS*/
@@ -40,10 +40,10 @@
 #define m_w_mini 39
 #define m_m_mini 160
 #define m_cho_mini 30
-#define m_p_mini 5.5
 
 
-int total_amount = 0;
+
+float total_amount;
 int coffee_beans=200;
 int water=200;
 int milk=200;
@@ -51,10 +51,14 @@ int syrup=200;
 
 float price;
 
-int choice = 0;
+
 
 int menu();
+int payment();
+
+
 /*Main Menu*/
+int choice = 0;
 int main()
 {
     printf("1. Order a coffee\n");
@@ -97,26 +101,33 @@ int menu(){
     }
     if (coffe_type_choice==1)
     {
-        if(coffee_beans<e_c_mini || water<e_w_mini)
+        if(coffee_beans<=e_c_mini || water<=e_w_mini)
         {
             printf("Unavailable due to temporarily insufficient ingredients\n");
         }
         else
         {
-            printf("Coffee is availble, your total is AED %.2f\n", e_p);
+            printf("Espresso Coffee is availble, your total is AED %.2f\n", e_p);
             coffee_beans=coffee_beans-e_c;
             water=water-e_w;
             printf("c: %d w: %d m: %d s: %d \n ", coffee_beans, water, milk, syrup);
             printf("Do you want to confirm your order\n");
             printf("1. Yes \n");
             printf("2. No \n");
-            
+            printf("Enter your chosen field's number from 1-2: ");
+            scanf("%d", &confirmation);
+            if (confirmation==1)
+            {
+                payment();
+            }else if (confirmation!=1){
+                menu();
+            }
         }
 
     }
     else if (coffe_type_choice==2)
     {
-        if(coffee_beans<c_c_mini || water<c_w_mini || milk< c_m_mini)
+        if(coffee_beans<=c_c_mini || water<=c_w_mini || milk<= c_m_mini)
         {
             printf("Unavailable due to temporarily insufficient ingredients\n");
         }
@@ -130,12 +141,20 @@ int menu(){
             printf("Do you want to confirm your order\n");
             printf("1. Yes \n");
             printf("2. No \n");
+            printf("Enter your chosen field's number from 1-2: ");
+            scanf("%d", &confirmation);
+            if (confirmation==1)
+            {
+                payment();
+            }else if (confirmation!=1){
+                menu();
+            }
             
         }
     }
     else if (coffe_type_choice==3)
     {
-        if(coffee_beans<m_c_mini || water<m_w_mini || milk< m_m_mini || syrup<m_cho_mini)
+        if(coffee_beans<=m_c_mini || water<=m_w_mini || milk<= m_m_mini || syrup<=m_cho_mini)
         {
             printf("Unavailable due to temporarily insufficient ingredients\n");
         }
@@ -150,6 +169,15 @@ int menu(){
             printf("Do you want to confirm your order\n");
             printf("1. Yes \n");
             printf("2. No \n");
+            printf("Enter your chosen field's number from 1-2: ");
+            scanf("%d", &confirmation);
+            if (confirmation==1)
+            {
+                payment();
+                
+            }else if (confirmation!=1){
+                menu();
+            }
 
         }
     }
@@ -157,3 +185,50 @@ int menu(){
     return 0;
     
 }
+
+
+/*Checking if the user pays the correct amount*/
+float money_input;
+float money_total=0;
+int payment(){
+    if (coffe_type_choice==1){
+        total_amount=e_p;
+        while (money_total!=total_amount)
+        {
+            printf("Enter only 1 or 0.5 to pay: ");
+            scanf("%f", &money_input);
+            if(money_input==1 || money_input==0.5)
+            {
+                money_total=money_input+money_total;
+            }else printf("Wrong input ");
+        }
+    }else if (coffe_type_choice==2){
+        total_amount=c_p;
+        while (money_total!=total_amount)
+        {
+            printf("Enter only 1 or 0.5 to pay: ");
+            scanf("%f", &money_input);
+            if(money_input==1 || money_input==0.5)
+            {
+                money_total=money_input+money_total;
+            }else printf("Wrong input ");
+        }
+    } else if (coffe_type_choice==3){
+        total_amount=m_p;
+        while (money_total!=total_amount)
+        {
+            printf("Enter only 1 or 0.5 to pay: ");
+            scanf("%f", &money_input);
+            if(money_input==1 || money_input==0.5)
+            {
+                money_total=money_input+money_total;
+            }else printf("Wrong input ");
+        }
+    }
+    if (total_amount==money_total)
+    {
+        printf("Enjoy your cofee");
+    }
+    
+}
+
